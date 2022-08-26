@@ -12,11 +12,10 @@ async function makeCall(page, configs) {
 
   await page.click("#newCall", {delay: 300});
   await page.waitForSelector("#newCallRecipients", {timeout: 10000});
-  await page.waitForTimeout(2000);
   await page.type("#newCallRecipients", "8056377243", {delay: 200});
   await page.waitForTimeout(2000);
   await page.click("#callButton", {delay: 2000});
-  await page.waitForTimeout(2000);
+  await page.waitForSelector("#show-dialer");
   await page.click("#show-dialer");  
 }
 
@@ -39,7 +38,7 @@ async function newCall(page, configs) {
 
   } catch(err) {
     if (err instanceof puppeteer.pptr.errors.TimeoutError) {
-      await makeCall(page, configs)
+      await makeCall(page, configs); 
     } else {
       throw new Error(err);
     }
