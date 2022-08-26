@@ -10,9 +10,9 @@ export async function evaluateMicrophone(page) {
     if (err instanceof puppeteer.pptr.errors.TimeoutError) {
       console.log("MICROPHONE DETECTED: PROCEEDING WITH AUTOMATION");
       return;
-    } else {
-      throw new Error(err);
     }
+    
+    throw new Error(err);
   }
 }
 
@@ -44,9 +44,10 @@ export async function evaluateCallButton(page, configs) {
   } catch(err) { 
     if (err instanceof puppeteer.pptr.errors.TimeoutError) {
       console.log("CALL BUTTON ENABLED");
-    } else {
-      throw new Error(err);
+      return;
     }
+    
+    throw new Error(err);
   }
 }
 

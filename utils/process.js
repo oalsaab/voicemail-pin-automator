@@ -38,10 +38,11 @@ async function newCall(page, configs) {
 
   } catch(err) {
     if (err instanceof puppeteer.pptr.errors.TimeoutError) {
-      await makeCall(page, configs); 
-    } else {
-      throw new Error(err);
+      await makeCall(page, configs);
+      return; 
     }
+    
+    throw new Error(err);
   }
 }
 
@@ -54,28 +55,28 @@ async function waitForCallConnection(page, configs) {
   
   try {
       await page.waitForFunction(`document.querySelector(".incall-status").innerText.includes("In call")`, {timeout: 10000});
-      await page.waitForTimeout(3000); //CHECKS CONNECTION AFTER 3 SECONDS
+      await page.waitForTimeout(3000);
 
-      const InCallStatus = await page.evaluate(() => { //CHECK IF YOU ARE STILL IN CALL
+      const InCallStatus = await page.evaluate(() => { //check call status after 3 seconds for connection and no rejection
           return document.querySelector(".incall-status").innerText.includes("In call");
       })
 
       if (!InCallStatus) {
           throw new Error("CALL REJECTED");
-      } else {
-        console.log("CALL CONNECTED");
-      }
+      } 
+      
+      console.log("CALL CONNECTED");
 
   } catch(err) {
       if (err instanceof puppeteer.pptr.errors.TimeoutError) {
           await evaluateCallConnection(page, configs);
           Object.assign(configs, {connectionCount: connectionCount - 1});
-          
           await waitForCallConnection(page, configs);
-      } else {
-          console.log("POSSIBLE CALL REJECTION RECEIVED: WAIT AT LEAST 15 MINUTES BEFORE RUNNING PROGRAM AGAIN");
-          throw new Error(err);
-      }
+          return;
+          
+      } 
+      
+      throw new Error("POSSIBLE CALL REJECTION RECEIVED: WAIT AT LEAST 15 MINUTES BEFORE RUNNING PROGRAM AGAIN");
   }
 }
 
@@ -157,9 +158,9 @@ async function checkPin(page, pin, configs) {
         
         return true;
 
-      } else {
-        throw new Error(err);
       }
+      
+      throw new Error(err);
   }
   
   return false;
@@ -178,9 +179,9 @@ async function closeDialogContainer(page) {
   } catch(err) {
       if (err instanceof puppeteer.pptr.errors.TimeoutError) {
         return;
-      } else {
-        throw new Error(err);
       }
+      
+      throw new Error(err);
   }
 }
 

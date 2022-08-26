@@ -19,12 +19,12 @@ async function launchTextnow(browser) {
   const page = await browser.newPage();
   const response = await page.goto("https://www.textnow.com/login", { waitUntil: "networkidle0" });
 
-  if (response.status() === 200) {
-    console.log("SUCCESSFUL CONNECTION TO TEXTNOW");
-    return page;
-  } else {
+  if (response.status() !== 200) {
     throw new Error(`FAILED TO CONNECT TO TEXTNOW - STATUS CODE: ${response.status()}`);
   }
+
+  console.log("SUCCESSFUL CONNECTION TO TEXTNOW");
+  return page; 
 }
 
 async function loginTextnow(page, credentials) {
@@ -42,9 +42,9 @@ async function loginTextnow(page, credentials) {
   } catch(err) {
     if (err instanceof puppeteer.pptr.errors.TimeoutError) {
       throw new Error("LOGIN FAILED: CHECK CREDENTIALS");
-    } else {
-      throw new Error(err);
-    }
+    } 
+    
+    throw new Error(err);
   }
 }
 
