@@ -1,0 +1,25 @@
+{
+  "name": "voicemail-pin-automator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node .\\main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oalsaab/voicemail-pin-automator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oalsaab/voicemail-pin-automator/issues"
+  },
+  "homepage": "https://github.com/oalsaab/voicemail-pin-automator#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "puppeteer": "^16.2.0",
+    "puppeteer-extra": "^3.3.4",
+    "puppeteer-extra-plugin-stealth": "^2.11.1"
+  }
+}
