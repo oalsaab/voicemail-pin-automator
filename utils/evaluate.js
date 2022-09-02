@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer-extra';
+import { TimeoutError } from "puppeteer";
 import { spawnClicker } from "./click/realclick.js";
 import { retryCall } from "./process.js";
 
@@ -7,7 +7,7 @@ export async function evaluateMicrophone(page) {
     await page.waitForSelector(".calling-disabled", {timeout: 3000});
     throw new Error("COULD NOT DETECT MICROPHONE: CHECK IF MICROPHONE IS CONNECTED");
   } catch(err) {
-    if (err instanceof puppeteer.pptr.errors.TimeoutError) {
+    if (err instanceof TimeoutError) {
       console.log("MICROPHONE DETECTED: PROCEEDING WITH AUTOMATION");
       return;
     }
@@ -42,7 +42,7 @@ export async function evaluateCallButton(page, configs) {
       await evaluateCallButton(page, configs);
     }
   } catch(err) { 
-    if (err instanceof puppeteer.pptr.errors.TimeoutError) {
+    if (err instanceof TimeoutError) {
       console.log("CALL BUTTON ENABLED");
       return;
     }

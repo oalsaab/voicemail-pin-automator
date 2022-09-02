@@ -1,9 +1,12 @@
-import puppeteer from 'puppeteer-extra';
+import puppeteer from 'puppeteer';
+import { addExtra } from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-puppeteer.use(StealthPlugin());
 
 async function launchBrowser() {
-  return (await puppeteer.launch({
+  const pptr = addExtra(puppeteer);
+  pptr.use(StealthPlugin());
+
+  return (await pptr.launch({
     headless: false,
     defaultViewport: null,
     args: ['--start-maximized', '--disable-notifications'],
@@ -40,7 +43,7 @@ async function loginTextnow(page, credentials) {
     await Promise.all([page.click("#btn-login"), page.waitForNavigation({ waitUntil: "networkidle0" })]);
     console.log("LOGIN SUCCESSFUL");
   } catch(err) {
-    if (err instanceof puppeteer.pptr.errors.TimeoutError) {
+    if (err instanceof puppeteer.TimeoutError) {
       throw new Error("LOGIN FAILED: CHECK CREDENTIALS");
     } 
     

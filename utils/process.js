@@ -1,6 +1,4 @@
-import puppeteer from 'puppeteer-extra';
-import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-puppeteer.use(StealthPlugin());
+import { TimeoutError } from "puppeteer";
 
 import { evaluateMicrophone, evaluateCallButton, evaluateCallConnection, evaluateConsole  }  from "./evaluate.js";
 import { logAttempt } from "./logutil.js";
@@ -37,7 +35,7 @@ async function newCall(page, configs) {
     }
 
   } catch(err) {
-    if (err instanceof puppeteer.pptr.errors.TimeoutError) {
+    if (err instanceof TimeoutError) {
       await makeCall(page, configs);
       return; 
     }
@@ -68,7 +66,7 @@ async function waitForCallConnection(page, configs) {
       console.log("CALL CONNECTED");
 
   } catch(err) {
-      if (err instanceof puppeteer.pptr.errors.TimeoutError) {
+      if (err instanceof TimeoutError) {
           await evaluateCallConnection(page, configs);
           Object.assign(configs, {connectionCount: connectionCount - 1});
           await waitForCallConnection(page, configs);
@@ -152,7 +150,7 @@ async function checkPin(page, pin, configs) {
       console.log(`INCORRECT PIN: ${pin}`);
       await logAttempt(pin, configs, "INCORRECT");
   } catch(err) {
-      if (err instanceof puppeteer.pptr.errors.TimeoutError && stateObj.condition) {
+      if (err instanceof TimeoutError && stateObj.condition) {
         console.log(`POSSIBLE CORRECT PIN ${pin}`);
         await logAttempt(pin, configs, "POSSIBLE CORRECT");
         
@@ -177,7 +175,7 @@ async function closeDialogContainer(page) {
       await page.waitForSelector("#tnDialogContainer", {timeout: 3000});
       await page.click('button[class="buttons secondary skip"]', {delay: 2000});
   } catch(err) {
-      if (err instanceof puppeteer.pptr.errors.TimeoutError) {
+      if (err instanceof TimeoutError) {
         return;
       }
       
