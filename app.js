@@ -8,7 +8,8 @@ import { attemptProcess }  from "./utils/process.js";
 import { launch } from "./utils/launch.js";
 
 function readTxt(txt) {
-  return readFileSync(txt, 'utf-8').split(/\r?\n/);
+  const txtArr = readFileSync(txt, 'utf-8').split(/\r?\n/);
+  return txtArr.filter(pin => (/^\d+$/.test(pin)) && (pin.length === 4) || (pin.length === 6));
 }
 
 async function main() {
