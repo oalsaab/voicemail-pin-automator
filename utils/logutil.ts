@@ -1,20 +1,27 @@
-import { appendFile } from 'fs/promises';
+import { createWriteStream } from "fs";
 
-function logTime() {
+function logTime(): string {
   const date = new Date();
-  const timeFormat = [date.getHours(), date.getMinutes(), date.getSeconds()].map((el) => String(el).padStart(2, '0'));
-  return `[${timeFormat.join(':')}]`;
+  const timeFormat: string[] = [
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+  ].map((el) => String(el).padStart(2, "0"));
+  return `[${timeFormat.join(":")}]`;
 }
 
-export async function logAttempt(pin, configs, result) {
+export async function logResult(
+  pin: string,
+  path: string,
+  result: string
+): Promise<void> {
   const timeFormat = logTime();
-  const {pinsLog, pinsAttempted} = configs;
+  const log = `${timeFormat} ${result} PIN: ${pin}`;
+  const logger = createWriteStream(path, { flags: "a" });
+  logger.write(`\n${log}`);
+}
 
-  await appendFile(pinsLog, `${timeFormat} ${result} PIN: ${pin}\n`, (err) => {
-      if (err) throw err; 
-  }); 
-
-  await appendFile(pinsAttempted, `${pin}\n`, (err) => { 
-      if (err) throw err;
-  });
+export async function logPin(pin: string, path: string): Promise<void> {
+  const logger = createWriteStream(path, { flags: "a" });
+  logger.write(`\n${pin}`);
 }

@@ -1,8 +1,8 @@
 import { spawn } from 'child_process';
 
-export async function spawnClicker(x, y) {
+export async function spawnClicker(x: number, y: number) {
   return new Promise((resolve, reject) => {
-    const args = ['clicker.py', x, y];
+    const args: string[] = ['clicker.py', x.toString(), y.toString()];
     const clicker = spawn('py', args, {cwd: 'utils/click'});
     clicker.on('close', (code) => { 
       resolve(code);
