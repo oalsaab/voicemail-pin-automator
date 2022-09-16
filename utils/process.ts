@@ -75,7 +75,7 @@ async function waitForCallConnection(page: Page): Promise<void> {
   } catch (err) {
     if (err instanceof TimeoutError) {
       await evaluateCallConnection(page);
-      Object.assign(configs, { connectionCount: connectionCount - 1 }); //error possibility here
+      Object.assign(configs, { connectionCount: connectionCount - 1 });
       await waitForCallConnection(page);
       return;
     }
@@ -182,7 +182,7 @@ async function checkPin(page: Page, pin: string): Promise<boolean> {
   }
 
   await page.click('.key[data-key="#"]', { delay: 300 });
-  console.log(`INCORRECT PIN: ${pin}`);
+  console.log("INCORRECT PIN:", pin);
   await logResult(pin, pinsLog, "INCORRECT");
   await logPin(pin, pinsAttempted);
   return false;
