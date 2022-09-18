@@ -4,9 +4,9 @@
 
 **Only use the automator on a target phone number that you own if you wish to run the program.**
 
-The program employs the capabilities of Puppeteer to launch a headful chromium instance and connect to a free VOIP technology (textnow) to run the automator.
+The program employs the capabilities of Puppeteer to launch a headful chromium instance, connect to a free VOIP technology (textnow), and automate the process of attempting a voicemail pin.
 
-The program will currently only work on numbers that are on the t-mobile carrier. The t-mobile voicemail system allows for unlimited pin attempts unlike other carriers.
+The program will currently only work on phone numbers that are on the t-mobile carrier. The t-mobile voicemail system allows for unlimited pin attempts unlike other carriers.
 
 In essence, the automator will call the backdoor number, enter the target's phone number and attempt a pin to get access to the voicemail system of the target.
 
